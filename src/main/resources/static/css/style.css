@@ -193,8 +193,7 @@ body {
 }
 
 .btn-icon {
-    font-size: 16px;
-    font-weight: 600;
+    display: none;
 }
 
 .alert {
@@ -403,6 +402,19 @@ select.form-control {
     width: 100%;
 }
 
+.table-container:hover {
+    overflow-x: hidden;
+}
+
+.table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.table-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .table-wrapper {
     border-radius: 0;
     border: none;
@@ -415,6 +427,9 @@ select.form-control {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
 .attractions-table thead {
@@ -429,8 +444,9 @@ select.form-control {
     text-align: left;
     font-weight: 600;
     font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-secondary);
-    border-bottom: 2px solid var(--border-light);
+    border-bottom: none;
     white-space: nowrap;
     text-transform: none;
     letter-spacing: 0.2px;
@@ -483,6 +499,7 @@ select.form-control {
     padding: 18px 20px;
     color: var(--text-primary);
     vertical-align: middle;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .name-cell {
@@ -541,7 +558,7 @@ select.form-control {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     font-size: 13px;
     color: var(--text-primary);
 }
