@@ -13,6 +13,12 @@
 ### Форма редактирования аттракциона
 ![Форма редактирования](screenshots/edit-attraction-form.png)
 
+### H2 Console - Экран входа
+![H2 Console Login](screenshots/h2-console-login.png)
+
+### H2 Console - Интерфейс
+![H2 Console Interface](screenshots/h2-console-interface.png)
+
 ## Требования
 
 - Java 17 или выше
