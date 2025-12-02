@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информационно-справочная система парка развлечений</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>Парк Развлечений</h1>
+                        <p class="subtitle">Информационно-справочная система</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h2 class="page-title">Справочник аттракционов</h2>
+                    <button class="btn btn-primary btn-add" onclick="showAddForm()">
+                        <span class="btn-icon">+</span>
+                        Добавить аттракцион
+                    </button>
+                </div>
+
+                <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                    <span class="alert-icon">✓</span>
+                    <span th:text="${successMessage}"></span>
+                </div>
+                <div th:if="${errorMessage}" class="alert alert-error" role="alert">
+                    <span class="alert-icon">×</span>
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
+                <div id="attractionForm" class="form-container" style="display: none;">
+                    <div class="form-header">
+                        <h3 id="formTitle">Добавить новый аттракцион</h3>
+                        <button class="btn-close" onclick="hideAddForm()">×</button>
+                    </div>
+                    <form th:action="@{/attractions/save}" th:object="${attraction}" method="post" class="attraction-form">
+                        <input type="hidden" th:field="*{id}"/>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label th:for="name">Название аттракциона <span class="required">*</span></label>
+                                <input type="text" th:field="*{name}" id="name" class="form-control" 
+                                       placeholder="Введите название" required>
+                                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="type">Тип аттракциона <span class="required">*</span></label>
+                                <select th:field="*{type}" id="type" class="form-control" required>
+                                    <option value="">Выберите тип</option>
+                                    <option value="Экстремальный">Экстремальный</option>
+                                    <option value="Семейный">Семейный</option>
+                                    <option value="Детский">Детский</option>
+                                    <option value="Водный">Водный</option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label th:for="description">Описание <span class="required">*</span></label>
+                                <textarea th:field="*{description}" id="description" class="form-control" 
+                                          rows="3" placeholder="Введите описание аттракциона" required></textarea>
+                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="minAge">Минимальный возраст <span class="required">*</span></label>
+                                <input type="number" th:field="*{minAge}" id="minAge" class="form-control" 
+                                       min="0" max="18" placeholder="0" required>
+                                <span th:if="${#fields.hasErrors('minAge')}" th:errors="*{minAge}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="maxAge">Максимальный возраст <span class="required">*</span></label>
+                                <input type="number" th:field="*{maxAge}" id="maxAge" class="form-control" 
+                                       min="0" max="100" placeholder="100" required>
+                                <span th:if="${#fields.hasErrors('maxAge')}" th:errors="*{maxAge}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="minHeight">Минимальный рост (м) <span class="required">*</span></label>
+                                <input type="number" th:field="*{minHeight}" id="minHeight" class="form-control" 
+                                       step="0.01" min="0" max="3" placeholder="1.20" required>
+                                <span th:if="${#fields.hasErrors('minHeight')}" th:errors="*{minHeight}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="capacity">Вместимость (чел.) <span class="required">*</span></label>
+                                <input type="number" th:field="*{capacity}" id="capacity" class="form-control" 
+                                       min="1" max="1000" placeholder="50" required>
+                                <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="openingTime">Время открытия <span class="required">*</span></label>
+                                <input type="time" th:field="*{openingTime}" id="openingTime" class="form-control" required>
+                                <span th:if="${#fields.hasErrors('openingTime')}" th:errors="*{openingTime}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="closingTime">Время закрытия <span class="required">*</span></label>
+                                <input type="time" th:field="*{closingTime}" id="closingTime" class="form-control" required>
+                                <span th:if="${#fields.hasErrors('closingTime')}" th:errors="*{closingTime}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="location">Местоположение <span class="required">*</span></label>
+                                <input type="text" th:field="*{location}" id="location" class="form-control" 
+                                       placeholder="Например: Зона А, Сектор 1" required>
+                                <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="error-message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="status">Статус</label>
+                                <select th:field="*{status}" id="status" class="form-control">
+                                    <option value="Работает">Работает</option>
+                                    <option value="На ремонте">На ремонте</option>
+                                    <option value="Закрыт">Закрыт</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-icon">✓</span>
+                                Сохранить
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="hideAddForm()">
+                                Отмена
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <div th:if="${attractions != null and !attractions.empty}" class="table-wrapper">
+                        <table class="attractions-table">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Название</th>
+                                    <th>Тип</th>
+                                    <th>Возраст</th>
+                                    <th>Рост (м)</th>
+                                    <th>Время работы</th>
+                                    <th>Вместимость</th>
+                                    <th>Местоположение</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="attraction, iterStat : ${attractions}" 
+                                    th:classappend="${attraction.status == 'На ремонте'} ? 'row-maintenance' : (${attraction.status == 'Закрыт'} ? 'row-closed' : '')"
+                                    th:onclick="'window.location.href=\'/attractions/edit/' + ${attraction.id} + '\''"
+                                    class="clickable-row">
+                                    <td th:text="${iterStat.count}"></td>
+                                    <td class="name-cell">
+                                        <strong th:text="${attraction.name}"></strong>
+                                        <div class="description-preview" th:text="${attraction.description}"></div>
+                                    </td>
+                                    <td>
+                                        <span class="badge" 
+                                              th:classappend="${attraction.type == 'Экстремальный'} ? 'badge-danger' : (${attraction.type == 'Семейный'} ? 'badge-success' : (${attraction.type == 'Детский'} ? 'badge-info' : (${attraction.type == 'Водный'} ? 'badge-primary' : '')))"
+                                              th:text="${attraction.type}"></span>
+                                    </td>
+                                    <td th:text="${attraction.minAge} + '-' + ${attraction.maxAge} + ' лет'"></td>
+                                    <td th:text="${#numbers.formatDecimal(attraction.minHeight, 1, 2)}"></td>
+                                    <td>
+                                        <span class="time-range">
+                                            <span th:text="${#temporals.format(attraction.openingTime, 'HH:mm')}"></span>
+                                            <span class="time-separator">-</span>
+                                            <span th:text="${#temporals.format(attraction.closingTime, 'HH:mm')}"></span>
+                                        </span>
+                                    </td>
+                                    <td th:text="${attraction.capacity} + ' чел.'"></td>
+                                    <td class="location-cell" th:text="${attraction.location}"></td>
+                                    <td>
+                                        <span class="status-badge" 
+                                              th:classappend="${attraction.status == 'Работает'} ? 'status-active' : (${attraction.status == 'На ремонте'} ? 'status-maintenance' : (${attraction.status == 'Закрыт'} ? 'status-closed' : ''))"
+                                              th:text="${attraction.status}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${attractions == null or attractions.empty}" class="empty-state">
+                        <div class="empty-icon"></div>
+                        <h3>Аттракционы не найдены</h3>
+                        <p>Начните с добавления первого аттракциона в систему</p>
+                        <button class="btn btn-primary" onclick="showAddForm()">
+                            <span class="btn-icon">+</span>
+                            Добавить аттракцион
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; 2024 Информационно-справочная система парка развлечений. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <script>
+        function showAddForm() {
+            document.getElementById('attractionForm').style.display = 'block';
+            document.getElementById('formTitle').textContent = 'Добавить новый аттракцион';
+            document.getElementById('attractionForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function hideAddForm() {
+            document.getElementById('attractionForm').style.display = 'none';
+            const form = document.querySelector('.attraction-form');
+            if (form) {
+                form.reset();
+                const idField = form.querySelector('input[type="hidden"]');
+                if (idField) idField.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const formErrors = document.querySelectorAll('.error-message');
+            if (formErrors.length > 0) {
+                showAddForm();
+            }
+        });
+    </script>
+</body>
+</html>
+
