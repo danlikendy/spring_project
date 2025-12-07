@@ -4,17 +4,17 @@
 
 ## Скриншоты
 
-### Страница входа
-![Страница входа](screenshots/login.png)
-
-### Страница регистрации
-![Страница регистрации](screenshots/register.png)
-
 ### Справочник аттракционов (часть 1)
 ![Справочник аттракционов](screenshots/attractions-list-1.png)
 
 ### Справочник аттракционов (часть 2)
 ![Справочник аттракционов](screenshots/attractions-list-2.png)
+
+### Страница входа
+![Страница входа](screenshots/login.png)
+
+### Страница регистрации
+![Страница регистрации](screenshots/register.png)
 
 ### Статистика
 ![Статистика](screenshots/statistics.png)
