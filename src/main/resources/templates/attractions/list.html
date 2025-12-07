@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,23 @@
     <div class="container">
         <header class="main-header">
             <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo-icon"></div>
-                    <div class="logo-text">
-                        <h1>Парк Развлечений</h1>
-                        <p class="subtitle">Информационно-справочная система</p>
+                <a th:href="@{/attractions}" style="text-decoration: none; color: inherit;">
+                    <div class="logo-section">
+                        <div class="logo-icon"></div>
+                        <div class="logo-text">
+                            <h1>Парк Развлечений</h1>
+                            <p class="subtitle">Информационно-справочная система</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="user-info">
+                    <div class="header-nav">
+                        <a th:href="@{/statistics}" class="header-nav-link">Статистика</a>
+                        <a th:href="@{/about}" class="header-nav-link">Об авторе</a>
+                        <span class="user-name" th:text="${#authentication.name}"></span>
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="header-nav-link logout-btn">Выйти</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -141,6 +154,48 @@
                     </form>
                 </div>
 
+                <div class="search-sort-container">
+                    <div class="search-panel">
+                        <form th:action="@{/attractions}" method="get" class="search-form">
+                            <div class="search-fields">
+                                <input type="text" name="name" th:value="${searchName}" 
+                                       placeholder="Поиск по названию" class="form-control search-input">
+                                <input type="text" name="location" th:value="${searchLocation}" 
+                                       placeholder="Поиск по местоположению" class="form-control search-input">
+                                <select name="type" class="form-control search-select">
+                                    <option value="">Все типы</option>
+                                    <option value="Экстремальный" th:selected="${searchType == 'Экстремальный'}">Экстремальный</option>
+                                    <option value="Семейный" th:selected="${searchType == 'Семейный'}">Семейный</option>
+                                    <option value="Детский" th:selected="${searchType == 'Детский'}">Детский</option>
+                                    <option value="Водный" th:selected="${searchType == 'Водный'}">Водный</option>
+                                    <option value="Интерактивный" th:selected="${searchType == 'Интерактивный'}">Интерактивный</option>
+                                    <option value="Развлекательный" th:selected="${searchType == 'Развлекательный'}">Развлекательный</option>
+                                </select>
+                                <select name="status" class="form-control search-select">
+                                    <option value="">Все статусы</option>
+                                    <option value="Работает" th:selected="${searchStatus == 'Работает'}">Работает</option>
+                                    <option value="На ремонте" th:selected="${searchStatus == 'На ремонте'}">На ремонте</option>
+                                    <option value="Закрыт" th:selected="${searchStatus == 'Закрыт'}">Закрыт</option>
+                                </select>
+                                <input type="hidden" name="sortBy" th:value="${sortBy}">
+                                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                                <button type="submit" class="btn btn-primary">Поиск</button>
+                                <a th:href="@{/attractions}" class="btn btn-secondary">Сбросить</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sort-panel">
+                        <span class="sort-label">Сортировка:</span>
+                        <a th:href="@{/attractions(name=${searchName}, type=${searchType}, status=${searchStatus}, location=${searchLocation}, sortBy='name', sortDir=${sortBy == 'name' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                           class="sort-link" th:classappend="${sortBy == 'name'} ? 'active'">По названию</a>
+                        <a th:href="@{/attractions(name=${searchName}, type=${searchType}, status=${searchStatus}, location=${searchLocation}, sortBy='type', sortDir=${sortBy == 'type' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                           class="sort-link" th:classappend="${sortBy == 'type'} ? 'active'">По типу</a>
+                        <a th:href="@{/attractions(name=${searchName}, type=${searchType}, status=${searchStatus}, location=${searchLocation}, sortBy='capacity', sortDir=${sortBy == 'capacity' and sortDir == 'asc' ? 'desc' : 'asc'})}" 
+                           class="sort-link" th:classappend="${sortBy == 'capacity'} ? 'active'">По вместимости</a>
+                        <span class="total-count" th:text="'Всего: ' + ${totalCount}"></span>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <div th:if="${attractions != null and !attractions.empty}" class="table-wrapper">
                         <table class="attractions-table">
@@ -231,6 +286,21 @@
             if (formErrors.length > 0) {
                 showAddForm();
             }
+
+            const header = document.querySelector('.main-header');
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScrollTop = scrollTop;
+            }, false);
         });
     </script>
 </body>
