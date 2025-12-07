@@ -13,6 +13,9 @@
 ### Страница регистрации
 ![Страница регистрации](screenshots/register.png)
 
+### Статистика
+![Статистика](screenshots/statistics.png)
+
 ### H2 Console - Экран входа
 ![H2 Console Login](screenshots/h2-console-login.png)
 
