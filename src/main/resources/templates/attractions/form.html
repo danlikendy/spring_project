@@ -10,11 +10,23 @@
     <div class="container">
         <header class="main-header">
             <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo-icon"></div>
-                    <div class="logo-text">
-                        <h1>Парк Развлечений</h1>
-                        <p class="subtitle">Информационно-справочная система</p>
+                <a th:href="@{/attractions}" style="text-decoration: none; color: inherit;">
+                    <div class="logo-section">
+                        <div class="logo-icon"></div>
+                        <div class="logo-text">
+                            <h1>Парк Развлечений</h1>
+                            <p class="subtitle">Информационно-справочная система</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="user-info">
+                    <div class="header-nav">
+                        <a th:href="@{/statistics}" class="header-nav-link">Статистика</a>
+                        <a th:href="@{/about}" class="header-nav-link">Об авторе</a>
+                        <span class="user-name" th:text="${#authentication.name}"></span>
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="header-nav-link logout-btn">Выйти</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -144,6 +156,21 @@
             <p>&copy; Попов Александр 2025 Информационно-справочная система парка развлечений. Все права защищены.</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.main-header');
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, false);
+        });
+    </script>
 </body>
 </html>
 

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <a th:href="@{/attractions}" style="text-decoration: none; color: inherit;">
+                    <div class="logo-section">
+                        <div class="logo-icon"></div>
+                        <div class="logo-text">
+                            <h1>Парк Развлечений</h1>
+                            <p class="subtitle">Информационно-справочная система</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="user-info" sec:authorize="isAuthenticated()">
+                    <div class="header-nav">
+                        <a th:href="@{/statistics}" class="header-nav-link">Статистика</a>
+                        <a th:href="@{/about}" class="header-nav-link">Об авторе</a>
+                        <span class="user-name" th:text="${#authentication.name}"></span>
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="header-nav-link logout-btn">Выйти</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="statistics-container">
+                    <h2 class="page-title" style="margin-bottom: 32px;">Статистика</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" th:text="${totalCount}"></div>
+                            <div class="stat-label">Всего аттракционов</div>
+                        </div>
+                        <div class="stat-card stat-success">
+                            <div class="stat-value" th:text="${workingCount}"></div>
+                            <div class="stat-label">Работает</div>
+                        </div>
+                        <div class="stat-card stat-warning">
+                            <div class="stat-value" th:text="${maintenanceCount}"></div>
+                            <div class="stat-label">На ремонте</div>
+                        </div>
+                        <div class="stat-card stat-danger">
+                            <div class="stat-value" th:text="${closedCount}"></div>
+                            <div class="stat-label">Закрыто</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-section">
+                        <h3 class="stats-section-title">Распределение по статусам</h3>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-success" 
+                                     th:if="${workingCount > 0}"
+                                     th:style="'width: ' + ${workingPercentage} + '%'">
+                                    <span th:if="${workingPercentage >= 5}" 
+                                          th:text="${#numbers.formatDecimal(workingPercentage, 1, 1)} + '%'"></span>
+                                </div>
+                                <div class="progress-fill progress-warning" 
+                                     th:if="${maintenanceCount > 0}"
+                                     th:style="'width: ' + ${maintenancePercentage} + '%'">
+                                    <span th:if="${maintenancePercentage >= 5}" 
+                                          th:text="${#numbers.formatDecimal(maintenancePercentage, 1, 1)} + '%'"></span>
+                                </div>
+                                <div class="progress-fill progress-danger" 
+                                     th:if="${closedCount > 0}"
+                                     th:style="'width: ' + ${closedPercentage} + '%'">
+                                    <span th:if="${closedPercentage >= 5}" 
+                                          th:text="${#numbers.formatDecimal(closedPercentage, 1, 1)} + '%'"></span>
+                                </div>
+                            </div>
+                            <div class="progress-labels">
+                                <span>Работает: <strong th:text="${workingCount}"></strong></span>
+                                <span>На ремонте: <strong th:text="${maintenanceCount}"></strong></span>
+                                <span>Закрыто: <strong th:text="${closedCount}"></strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-section">
+                        <h3 class="stats-section-title">Распределение по типам</h3>
+                        <div class="type-stats">
+                            <div th:each="entry : ${typeStats}" class="type-stat-item">
+                                <div class="type-stat-label" th:text="${entry.key}"></div>
+                                <div class="type-stat-bar">
+                                    <div class="type-stat-fill" 
+                                         th:style="'width: ' + (${entry.value} * 100.0 / ${totalCount > 0 ? totalCount : 1}) + '%'"></div>
+                                </div>
+                                <div class="type-stat-value" th:text="${entry.value}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; Попов Александр 2025 Информационно-справочная система парка развлечений. Все права защищены.</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.main-header');
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ошибка сервера</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <a th:href="@{/attractions}" style="text-decoration: none; color: inherit;">
+                    <div class="logo-section">
+                        <div class="logo-icon"></div>
+                        <div class="logo-text">
+                            <h1>Парк Развлечений</h1>
+                            <p class="subtitle">Информационно-справочная система</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="error-container">
+                    <div class="error-card">
+                        <div class="error-code" th:text="${errorCode}">500</div>
+                        <h2 class="error-title" th:text="${errorTitle}">Внутренняя ошибка сервера</h2>
+                        <p class="error-message" th:text="${errorMessage}">Произошла внутренняя ошибка сервера. Пожалуйста, попробуйте позже.</p>
+                        <div class="error-actions">
+                            <a th:href="@{/attractions}" class="btn btn-primary">На главную</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; Попов Александр 2025 Информационно-справочная система парка развлечений. Все права защищены.</p>
+        </footer>
+    </div>
+</body>
+</html>
+

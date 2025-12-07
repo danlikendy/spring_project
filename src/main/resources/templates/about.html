@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Об авторе</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <a th:href="@{/attractions}" style="text-decoration: none; color: inherit;">
+                    <div class="logo-section">
+                        <div class="logo-icon"></div>
+                        <div class="logo-text">
+                            <h1>Парк Развлечений</h1>
+                            <p class="subtitle">Информационно-справочная система</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="user-info" sec:authorize="isAuthenticated()">
+                    <div class="header-nav">
+                        <a th:href="@{/statistics}" class="header-nav-link">Статистика</a>
+                        <a th:href="@{/about}" class="header-nav-link">Об авторе</a>
+                        <span class="user-name" th:text="${#authentication.name}"></span>
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="header-nav-link logout-btn">Выйти</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div class="about-container">
+                    <div class="about-card">
+                        <h2 class="about-title">Об авторе</h2>
+                        
+                        <div class="about-section">
+                            <h3 class="about-section-title">Личная информация</h3>
+                            <div class="about-info">
+                                <p><strong>ФИО:</strong> <span th:text="${authorName}"></span></p>
+                                <p><strong>Группа:</strong> <span th:text="${group}"></span></p>
+                                <p><strong>Учебное заведение:</strong> <span th:text="${university}"></span></p>
+                                <p><strong>Факультет:</strong> <span th:text="${faculty}"></span></p>
+                                <p><strong>Кафедра:</strong> <span th:text="${department}"></span></p>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="about-section-title">Используемые технологии</h3>
+                            <div class="technologies-list">
+                                <span th:each="tech : ${technologies}" class="tech-badge" th:text="${tech}"></span>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="about-section-title">Опыт работы с технологиями</h3>
+                            <div class="about-info">
+                                <p>В процессе разработки данного проекта были изучены и применены современные технологии веб-разработки на платформе Java. 
+                                Проект реализован с использованием Spring Boot для создания полнофункционального веб-приложения, Spring Security для обеспечения безопасности, 
+                                Spring Data JPA и Hibernate для работы с базой данных. Интерфейс разработан с использованием Thymeleaf и современного CSS с применением 
+                                принципов дизайна, вдохновленных iOS. В процессе работы были освоены принципы трехзвенной архитектуры, RESTful API, объектно-реляционного 
+                                отображения (ORM) и безопасной разработки приложений.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; Попов Александр 2025 Информационно-справочная система парка развлечений. Все права защищены.</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.main-header');
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>
+

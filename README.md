@@ -7,11 +7,11 @@
 ### Список аттракционов
 ![Список аттракционов](screenshots/attractions-list.png)
 
-### Форма добавления аттракциона
-![Форма добавления](screenshots/add-attraction-form.png)
+### Страница входа
+![Страница входа](screenshots/login.png)
 
-### Форма редактирования аттракциона
-![Форма редактирования](screenshots/edit-attraction-form.png)
+### Страница регистрации
+![Страница регистрации](screenshots/register.png)
 
 ### H2 Console - Экран входа
 ![H2 Console Login](screenshots/h2-console-login.png)
